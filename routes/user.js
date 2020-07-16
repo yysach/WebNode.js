@@ -4,6 +4,7 @@ const User = require('../models/User')
 // encrypt password
 const bcrypt = require('bcryptjs');
 const { Mongoose } = require('mongoose');
+const passport = require('passport');
 
 
 router.get('/login',function(req,res){
@@ -92,4 +93,20 @@ router.post('/register',(req,res)=>{
     }
    
 });
+
+// Login handler
+router.post('/login',(req,res,next) => {
+    passport.authenticate('local',{
+        successRedirect:'/dashboard',
+        failureRedirect:'/user/login',
+        failureFlash:true
+    })(req,res,next);
+});
+
+router.get('/logout',(req,res)=>{
+    req.logOut();
+    req.flash('success_msg',"you are logged out !")
+    res.redirect('/user/login');
+})
+
 module.exports = router;
