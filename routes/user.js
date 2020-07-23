@@ -32,7 +32,6 @@ router.post('/register',(req,res)=>{
     if(password2.length < 4)
         errors.push({msg : "password is too short !!"})
 
-    console.log(errors);
     if(errors.length > 0){
         res.render('register',{
             errors,
@@ -57,10 +56,9 @@ router.post('/register',(req,res)=>{
                     password2
                 });
                 console.log('hello email already exits')
-                console.log(errors);
-
             }
             else{
+                // creating mongoose model for new user now....
                 console.log(name,email,password);
                 const newUser = new User({
                     name,
@@ -97,7 +95,7 @@ router.post('/register',(req,res)=>{
 // Login handler
 router.post('/login',(req,res,next) => {
     passport.authenticate('local',{
-        successRedirect:'/dashboard',
+        successRedirect:'/home',
         failureRedirect:'/user/login',
         failureFlash:true
     })(req,res,next);

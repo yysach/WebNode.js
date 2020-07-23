@@ -1,11 +1,12 @@
 const express = require('express');
-const expressLayouts = require('express-ejs-layouts');// Layout support for ejs in express
-const expressEjsLayouts = require('express-ejs-layouts');
+const expressEjsLayouts = require('express-ejs-layouts'); // Layout support for ejs in express
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser')
-
+// before using connect flash,need to use express-session
 const session = require('express-session')
 const flash = require('connect-flash')
+
+// for authentication
 const passport = require('passport');
 
 const app = express();
@@ -16,7 +17,6 @@ require('./config/passport')(passport);
 
 // db config
 const db = require('./config/key');
-const { urlencoded } = require('express');
 
 // connect to mongo
 mongoose.connect(db.MongoURL,{useNewUrlParser:true,useUnifiedTopology:true},function(err,client,field){
@@ -36,6 +36,7 @@ app.set('view engine','ejs');
 // body parser
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('views')); // inorder to use views/js/app.js
 
 // express session middleware
 app.use(session({
